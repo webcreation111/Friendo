@@ -8,7 +8,11 @@ $dob=$_POST['doby'];
 $nati=$_POST['national'];
 $reg=$_POST['region'];
 
-$result=mysquli_query($mysquli, "insert into users value('', '$name', '$gen', '$dob', '$nati', '$reg')");
+  $sql = "INSERT INTO users 
+            (name, gender, dob, nationality, region)
+            VALUES ('$name', '$gen', '$dob', '$nati', '$reg')";
+
+$result=mysqli_query($mysquli,$sql));
 if($result){
 echo "User register successfully, you can continue";
 }
