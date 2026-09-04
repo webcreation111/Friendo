@@ -1,6 +1,6 @@
 <?php
 include("config.php");
-if(isset($POST['start']))
+if(isset($_POST['start']))
 {
 $name=$_POST['nName'];
 $gen=$_POST['gender'];
