@@ -9,7 +9,7 @@ $nati=$_POST['national'];
 $reg=$_POST['region'];
 
   $sql = "INSERT INTO users 
-            (nName, gender, dob, national, region)
+            (nName, gender, doby, national, region)
             VALUES ('$name', '$gen', '$dob', '$nati', '$reg')";
 
 $result=mysqli_query($mysquli,$sql);
