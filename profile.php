@@ -12,7 +12,7 @@ $reg=$_POST['region'];
             (name, gender, dob, nationality, region)
             VALUES ('$name', '$gen', '$dob', '$nati', '$reg')";
 
-$result=mysqli_query($mysquli,$sql));
+$result=mysqli_query($mysquli,$sql);
 if($result){
 echo "User register successfully, you can continue";
 }
