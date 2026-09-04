@@ -114,6 +114,7 @@
 <script src="script.js"></script>
 <script>
   const profile = getProfile();
+  window.location.href = 'profile-confirm.html';
 
   function refreshRows() {
     document.getElementById('nicknameValue').textContent = (profile.nickname || 'Select') + ' \u203a';
