@@ -44,7 +44,7 @@
 
     <div class="btn-row" style="margin-top:22px;">
        
-      <button class="btn btn-primary" id="startBtn" name="start" onclick="goConfirm()" disabled>Start</button>
+      <button type="button" class="btn btn-primary" id="startBtn" onclick="goConfirm()" disabled>Start</button>
         
     </div>
   </div>
@@ -56,10 +56,10 @@
   <div class="dialog">
     <div class="dialog-header"><h3>Enter Nickname</h3><button class="close" onclick="closeDialog('nicknameDialog')">&times;</button></div>
     <div class="dialog-footer">
-      <form method="post" action="profile.php">
+      
       <input type="text" name="nName" id="nicknameInput" placeholder="Your nickname" style="width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:12px;">
       <button class="btn btn-primary" onclick="setNickname()">Save</button>
-      </form>>
+      
     </div>
   </div>
 </div>
@@ -69,28 +69,28 @@
   <div class="dialog">
     <div class="dialog-header"><h3>Select Gender</h3><button class="close" onclick="closeDialog('genderDialog')">&times;</button></div>
     <div class="dialog-body" id="genderList">
-        <form method="post" action="profile.php">
+        
       <label class="option-row"><span>Male</span><input type="radio" name="gender" onclick="setGender('Male')"></label>
       <label class="option-row"><span>Female</span><input type="radio" name="gender" onclick="setGender('Female')"></label>
       <label class="option-row"><span>Other</span><input type="radio" name="gender" onclick="setGender('Other')"></label>
       <label class="option-row"><span>Prefer not to say</span><input type="radio" name="gender" onclick="setGender('Prefer not to say')"></label>
-        </form>>
+        
     </div>
   </div>
 </div>
 
 <!-- Birth year dialog -->
-<form method="post" action="profile.php">
+
 <div class="overlay" id="birthYearDialog">
   <div class="dialog">
     <div class="dialog-header"><h3>Choose birth year</h3><button class="close" onclick="closeDialog('birthYearDialog')">&times;</button></div>
     <div class="dialog-body" id="birthYearList"  name="doby" > </div>
   </div>
 </div>
-</form>
+
 
 <!-- Nationality dialog -->
-<form method="post" action="profile.php">
+
 <div class="overlay" id="nationalityDialog">
   <div class="dialog">
     <div class="dialog-header"><h3>Select Nationality</h3><button class="close" onclick="closeDialog('nationalityDialog')">&times;</button></div>
@@ -98,10 +98,10 @@
     <div class="dialog-body" id="nationalityList" ></div>
   </div>
 </div>
-    </form>
+    
 
 <!-- Region dialog -->
-<form method="post" action="profile.php">
+
 <div class="overlay" id="regionDialog">
   <div class="dialog">
     <div class="dialog-header"><h3>Select Region</h3><button class="close" onclick="closeDialog('regionDialog')">&times;</button></div>
@@ -109,12 +109,11 @@
     <div class="dialog-body" id="regionList"></div>
   </div>
 </div>
-</form>
+
 
 <script src="script.js"></script>
 <script>
   const profile = getProfile();
-  window.location.href = 'profile-confirm.html';
 
   function refreshRows() {
     document.getElementById('nicknameValue').textContent = (profile.nickname || 'Select') + ' \u203a';
@@ -187,9 +186,35 @@
     refreshRows();
   }
 
-  function goConfirm() {
+  async function goConfirm() {
     if (document.getElementById('startBtn').disabled) return;
-    window.location.href = 'profile-confirm.html';
+
+    const formData = new URLSearchParams({
+      nName: profile.nickname,
+      gender: profile.gender,
+      doby: profile.birthYear,
+      national: profile.nationality,
+      region: profile.region
+    });
+
+    try {
+      const response = await fetch('profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+      });
+
+      const result = await response.text();
+
+      if (result.trim() === 'success') {
+        window.location.href = 'profile-confirm.html';
+      } else {
+        alert(result);
+      }
+    } catch (error) {
+      alert('Could not connect to the PHP/MySQL server. Make sure Apache and MySQL are running.');
+      console.error(error);
+    }
   }
 
   buildBirthYears();
