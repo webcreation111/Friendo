@@ -1,5 +1,5 @@
 <?php
-$hostname='https://friendo-rho.vercel.app/';
+$hostname='https://friendo-mauve.vercel.app/';
 $username='root';
 $password='';
 $database='profile.php';
